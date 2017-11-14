@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script src ='./js/xhrPromise.js'></script>
+</head>
+<body>
+Cedula : <input type='text' id ='ced'>
+<button onclick = 'request()'>Send</button>
+<button onclick = 'sqlinj()'>TEST SQLInjection</button>
+
+<script type="text/javascript">
+	var xhr = new XHR();
+	
+	function $(id){
+		return document.getElementById(id);
+	}
+	
+	function request() {
+		xhr.get('./jdbc_classic',{ced:$('ced').value}).then(function(data){
+			console.log(data);
+		});
+	}
+	function sqlinj() {
+		xhr.get('./sql_inj',{ced:$('ced').value}).then(function(data){
+			console.log(data);
+		});
+	}
+		
+</script>
+</body>
+</html>
