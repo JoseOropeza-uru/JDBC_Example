@@ -18,12 +18,12 @@ Cedula : <input type='text' id ='ced'>
 	}
 	
 	function request() {
-		xhr.get('./jdbc_classic',{ced:$('ced').value}).then(function(data){
+		xhr.get('./jdbc_classic',{ced:$('ced').value},{'Content-Type':'application/x-www-form-urlencoded'}).then(function(data){
 			console.log(data);
 		});
 	}
 	function sqlinj() {
-		xhr.get('./sql_inj',{ced:$('ced').value}).then(function(data){
+		xhr.get('./sql_inj',{ced:$('ced').value},{'Content-Type':'application/x-www-form-urlencoded'}).then(function(data){
 			console.log(data);
 		});
 	}
