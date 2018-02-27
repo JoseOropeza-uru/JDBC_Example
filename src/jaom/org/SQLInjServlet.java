@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import jaom.org.utilities.PropertiesReader;
+
 /**
  * Servlet implementation class SQLInjServlet
  */
@@ -44,19 +46,20 @@ public class SQLInjServlet extends HttpServlet {
 		Statement pstm = null;
 		ResultSet rs = null;
 		ResultSetMetaData rsmd = null;
+		PropertiesReader props = PropertiesReader.getInstance();
 		try {
 			PrintWriter out = response.getWriter();
-			Class.forName("org.postgresql.Driver");
-			con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Test", "postgres", "23741340");
+			Class.forName(props.getValue("dbDriver"));
+			con= DriverManager.getConnection(props.getValue("dbUrl"),props.getValue("dbUser"),props.getValue("dbPassword"));
 			JSONObject json = new JSONObject();
 			JSONArray table = new JSONArray();
 			JSONObject row;
 			String query;
 
 			if (request.getParameter("ced").trim().equals("")) {
-				query = "SELECT * FROM TEST2";
+				query = props.getValue("injquery1");
 			} else {
-				query = "SELECT * FROM TEST2 WHERE ced ="+request.getParameter("ced").trim();
+				query = props.getValue("injquery2")+request.getParameter("ced").trim();
 			}
 
 			pstm = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

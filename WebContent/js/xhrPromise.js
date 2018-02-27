@@ -13,6 +13,22 @@ function XHR() {
 		return res;
 	};
     var xmlObject = null;
+    var checkHeader = (params,headers)=>{
+        switch(params.constructor.name){
+            case 'Object':{
+                headers['Content-Type'] = 'application/json';
+                params = JSON.stringify(params);
+                break;
+            }
+            case 'FormData':{
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+        return params;
+    }
     var xhr = (method,url,params,headers) => {
         return new Promise((res, rej) => {
             try {
@@ -33,7 +49,7 @@ function XHR() {
                     xmlObject.setRequestHeader(header, headers[header]);
                 }
                 if (method === 'POST') {
-                    xmlObject.send(JSON.stringify(params));
+                    xmlObject.send(params);
                 }
                 else{
                 	xmlObject.send();
@@ -59,6 +75,7 @@ function XHR() {
     }
     this.post = (url,params,headers) => {
         return new Promise((res, rej) => {
+            params = checkHeader(params,headers);
             xhr('POST', url,params,headers).then((data) => {
                 res(data);
             });
@@ -84,4 +101,5 @@ function XHR() {
             });
         });
     }
+
 }

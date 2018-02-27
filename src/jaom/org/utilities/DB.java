@@ -1,4 +1,4 @@
-package jaom.org;
+package jaom.org.utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,11 +18,11 @@ public class DB {
 	private JSONObject row;
 	private PreparedStatement pstmt;
 	private Connection con;
-	
-	public DB(String jdbc,String host,String port, String db, String user, String pass){
+	private PropertiesReader prop = PropertiesReader.getInstance();
+	public DB(){
 		try {
-			Class.forName("org.postgresql.Driver");
-			this.con= DriverManager.getConnection("jdbc:"+jdbc+"://"+host+":"+port+"/"+db,user,pass);
+			Class.forName(prop.getValue("dbDriver"));
+			this.con= DriverManager.getConnection(prop.getValue("dbUrl"),prop.getValue("dbUser"),prop.getValue("dbPassword"));
 		}
 		catch(Exception e){
 			e.getStackTrace();

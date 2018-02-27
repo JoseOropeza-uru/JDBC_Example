@@ -2,6 +2,7 @@ package jaom.org;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+
+import jaom.org.utilities.DB;
+import jaom.org.utilities.PropertiesReader;
 
 /**
  * Servlet implementation class Test
@@ -32,8 +36,9 @@ public class JDBCServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		JSONObject json = new JSONObject();
-		DB db = new DB("postgresql", "localhost", "5432", "Test", "postgres", "23741340");
-		String query = "SELECT * FROM TEST";
+		DB db = new DB();
+		
+		String query = PropertiesReader.getInstance().getValue("query1");
 		json.put("query", db.executeQuery(query));
 		db.closeCon();
 		out.print(json.toString());
@@ -43,8 +48,15 @@ public class JDBCServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		PrintWriter out = response.getWriter();
+		JSONObject json = new JSONObject();
+		JSONObject reqBody = new JSONObject(request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+		DB db = new DB();
+		
+		String query = PropertiesReader.getInstance().getValue("query2");
+		json.put("query", db.executeQuery(query,reqBody.getInt("ced")));
+		db.closeCon();
+		out.print(json.toString());
 	}
 
 }
