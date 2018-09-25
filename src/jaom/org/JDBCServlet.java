@@ -37,7 +37,7 @@ public class JDBCServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		JSONObject json = new JSONObject();
 		DB db = new DB();
-		
+		System.out.println(PropertiesReader.getInstance().getValue("query2"));
 		String query = PropertiesReader.getInstance().getValue("query1");
 		json.put("query", db.executeQuery(query));
 		db.closeCon();
@@ -52,7 +52,7 @@ public class JDBCServlet extends HttpServlet {
 		JSONObject json = new JSONObject();
 		JSONObject reqBody = new JSONObject(request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
 		DB db = new DB();
-		
+		System.out.println(PropertiesReader.getInstance().getValue("query2"));
 		String query = PropertiesReader.getInstance().getValue("query2");
 		json.put("query", db.executeQuery(query,reqBody.getInt("ced")));
 		db.closeCon();

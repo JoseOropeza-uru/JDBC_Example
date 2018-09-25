@@ -1,6 +1,5 @@
 package jaom.org.utilities;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -12,9 +11,10 @@ public class PropertiesReader {
 	
 	private PropertiesReader() {
 		try {
-			String catalina = System.getProperty("catalina.base");
-			System.out.println(System.getProperty("catalina.base"));
-			input = new FileInputStream(catalina + "\\conf\\connection.properties");
+			input = getClass().getClassLoader().getResourceAsStream("connection.properties");
+//			String catalina = System.getProperty("catalina.base");
+//			System.out.println(System.getProperty("catalina.base"));
+//			input = new FileInputStream(catalina + "\\conf\\connection.properties");
 			prop.load(input);
 		} catch (IOException ex) {
 			ex.printStackTrace();
